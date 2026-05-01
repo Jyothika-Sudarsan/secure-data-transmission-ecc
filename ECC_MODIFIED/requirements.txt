@@ -1,0 +1,7 @@
+Flask
+Werkzeug
+cryptography
+numpy
+matplotlib
+Pillow
+opencv-python
