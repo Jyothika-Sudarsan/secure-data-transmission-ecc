@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}ECC Steganography - Secure Data Hiding{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Hero Section -->
+    <div class="row hero-section align-items-center min-vh-100">
+        <div class="col-lg-6 mx-auto text-center text-white">
+            <h1 class="display-3 fw-bold mb-4">
+                A Secure Data Transmission Framework Using Elliptic Curve Cryptography
+            </h1>
+            <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+                {% if 'username' in session %}
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-warning btn-lg px-4 gap-3">
+                        <i class="fas fa-tachometer-alt"></i> Go to Dashboard
+                    </a>
+                {% else %}
+                    <a href="{{ url_for('register') }}" class="btn btn-warning btn-lg px-4 gap-3">
+                        <i class="fas fa-user-plus"></i> Get Started
+                    </a>
+                    <a href="{{ url_for('login') }}" class="btn btn-outline-light btn-lg px-4">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+    <!-- How It Works -->
+    <div class="row py-5 text-white">
+        <div class="col-lg-8 mx-auto">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold">How It Works</h2>
+                <p class="lead">Three simple steps to secure communication</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-4 text-center">
+                    <div class="step-number">1</div>
+                    <h4>Generate Keys</h4>
+        
+                </div>
+                <div class="col-md-4 text-center">
+                    <div class="step-number">2</div>
+                    <h4>Encrypt & Hide</h4>
+                    
+                </div>
+                <div class="col-md-4 text-center">
+                    <div class="step-number">3</div>
+                    <h4>Extract & Decrypt</h4>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.hero-section {
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.9), rgba(116, 75, 162, 0.9)),
+                url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80');
+    background-size: cover;
+    background-position: center;
+}
+
+.step-number {
+    width: 60px;
+    height: 60px;
+    background: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0 auto 20px;
+}
+</style>
+{% endblock %}

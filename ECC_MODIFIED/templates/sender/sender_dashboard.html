@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block title %}Sender Dashboard - ECC Steganography{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="dashboard-header text-center mb-5">
+                <h1 class="display-4"><i class="fas fa-paper-plane text-warning"></i> Sender Dashboard</h1>
+                <p class="lead">Encrypt and hide your secret data securely</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Key Management Section -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card custom-card">
+                <div class="card-header">
+                    <h4><i class="fas fa-key text-warning"></i> Key Management</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Select Algorithm</label>
+                                <select class="form-select" id="algorithmSelect">
+                                    <option value="curve25519">Curve25519</option>
+                                    <option value="secp256r1">SECP256R1</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-warning btn-lg" onclick="generateKeys()">
+                                <i class="fas fa-key"></i> Generate Key Pair
+                            </button>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Your Public Key</label>
+                                <textarea class="form-control" id="publicKey" rows="3" readonly placeholder="Public key will appear here..."></textarea>
+                                <button class="btn btn-outline-warning btn-sm mt-2" onclick="copyPublicKey()">
+                                    <i class="fas fa-copy"></i> Copy
+                                </button>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Your Private Key</label>
+                                <textarea class="form-control" id="privateKey" rows="3" readonly placeholder="Private key will appear here..."></textarea>
+                                <button class="btn btn-outline-warning btn-sm mt-2" onclick="copyPrivateKey()">
+                                    <i class="fas fa-copy"></i> Copy
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function generateKeys() {
+    const algorithm = document.getElementById('algorithmSelect').value;
+    const button = event.target;
+    const originalText = button.innerHTML;
+    
+    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
+    button.disabled = true;
+    
+    fetch('/generate_keys', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({algorithm: algorithm})
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            alert('Error: ' + data.error);
+        } else {
+            document.getElementById('publicKey').value = data.public_key;
+            document.getElementById('privateKey').value = data.private_key;
+            alert('Keys generated successfully using ' + algorithm);
+        }
+    })
+    .catch(error => {
+        alert('Error generating keys: ' + error);
+    })
+    .finally(() => {
+        button.innerHTML = originalText;
+        button.disabled = false;
+    });
+}
+
+function copyPublicKey() {
+    const publicKey = document.getElementById('publicKey');
+    publicKey.select();
+    document.execCommand('copy');
+    alert('Public key copied to clipboard!');
+}
+
+function copyPrivateKey() {
+    const privateKey = document.getElementById('privateKey');
+    privateKey.select();
+    document.execCommand('copy');
+    alert('Private key copied to clipboard!');
+}
+</script>
+{% endblock %}
